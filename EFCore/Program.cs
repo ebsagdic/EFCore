@@ -107,10 +107,31 @@ using (var context = new AppDbContext())
     //context.Add(student);
     //context.SaveChanges();
 
-    //veya
-    var teacher = context.Teachers.First(x => x.Name == "Ulema Hoca");
-    teacher.Students.AddRange(new List<Student> { new() { Name = "Bino",Age = 17 },new() { Name = "Hüso", Age = 18 } });
+    ////veya
+    //var teacher = context.Teachers.First(x => x.Name == "Ulema Hoca");
+    //teacher.Students.AddRange(new List<Student> { new() { Name = "Bino",Age = 17 },new() { Name = "Hüso", Age = 18 } });
+    //context.SaveChanges();
+
+    ////Delete Behaviour Cascade
+    //var category = context.Categories.First(x => x.Name == "Kalembaba");
+    //var category = new Category()
+    //{
+    //    Name = "Kalembaba",
+    //    Products = new List<Product>()
+    //{
+    //    new(){ Name="kalembaba1",Price=200,Stock = 240, Barcode=764 },
+    //    new(){ Name="kalembaba2",Price=250,Stock = 260, Barcode=765 },
+    //    new(){ Name="kalembaba3",Price=290,Stock = 440, Barcode=766 }
+    //}
+    //};
+    //context.Remove(category);
+    //context.Add(category);
+    //context.SaveChanges();
+
+    var product = new Product() { Name = "Kebabçi", Price = 250, Barcode = 1234, Stock = 150, Kdv = 18 };
+    context.Products.Add(product);
     context.SaveChanges();
+
     Console.WriteLine("Okeyto");
 
 }
