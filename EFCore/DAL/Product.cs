@@ -26,5 +26,9 @@ namespace EFCore.CodeFirst.DAL
         //public DateTime? CreatedDate { get; set; }
         public  int  Barcode { get; set; }
 
+        public int CategoryId { get; set; }
+        public Category Category { get; set; }
+
+        public ProductFeature ProductFeature { get; set; }
     }
 }

@@ -5,7 +5,7 @@ using System.Text;
 
 Initializer.Build();
 
-using(var context = new AppDbContext())
+using (var context = new AppDbContext())
 {
     //Aşağıdaki işlemlerde stateleri anlamak önemli
     //Eğer Detached ise memoryden okunmuyordur, kod üzerinden okunuyodur, bu state ile savechange desem bile dbye yansımayacaktır.
@@ -72,6 +72,45 @@ using(var context = new AppDbContext())
     //context.Update(new Product() { Id = 1, Name = "Kasım" });
     //Yani demek istediğim direkt modified yaptığım yerde düzenleme yaparsam update ile yapabilirim.
     //////////////////////////////////////////////////////////////////////
-    
+
+    //One to many ilişki için data ekleme 
+    //var category = new Category { Name = "Defter" };
+    //var product = new Product { Name ="Defterinho",Price = 100, Stock = 200, Barcode=123,Category=category,CategoryId=category.Id };
+    ////veya
+    //category.Products.Add(new() { Name = "Defterdarbaba",Price=137,Stock=250,Barcode=222 });
+    //context.Products.Add(product);
+    // context.SaveChanges();
+
+    //////////////////////////////////////////////////////////////////////
+
+    //OnetoOne ilişki için data ekleme
+
+    //var product = new Product() { Name = "silgi5", Price = 35, Stock = 900, Barcode = 345, Category = new Category() { Name = "Silgi" }, ProductFeature = new ProductFeature { Width = 78, Height = 45, Color = "Orange" } };
+    ////Veya
+
+    //var category = context.Categories.First(x=>x.Name == "Silgi");
+
+    //var product = new Product() { Name = "silgi7", Price = 35, Stock = 900, Barcode = 345, Category = category };
+
+    //var productFeature = new ProductFeature() { Color="kara",Width=250,Height=45,Product= product};
+
+    //context.ProductFeatures.Add(productFeature);
+    //context.SaveChanges();
+    //var teacher = new Teacher() { Name = "Canan Hoca" };
+    //teacher.Students.Add(new() { Age = 12, Name= "Kemal"});
+    //context.Add(teacher);
+    //context.SaveChanges();
+    //Console.WriteLine("OK");
+
+    //var student = new Student() { Name = "Osman", Age = 16 };
+    //student.Teachers.Add(new() { Name = "Ulema Hoca" });
+    //context.Add(student);
+    //context.SaveChanges();
+
+    //veya
+    var teacher = context.Teachers.First(x => x.Name == "Ulema Hoca");
+    teacher.Students.AddRange(new List<Student> { new() { Name = "Bino",Age = 17 },new() { Name = "Hüso", Age = 18 } });
+    context.SaveChanges();
+    Console.WriteLine("Okeyto");
 
 }
