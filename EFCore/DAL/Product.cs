@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Castle.Components.DictionaryAdapter;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -22,9 +24,9 @@ namespace EFCore.CodeFirst.DAL
         //[MinLength(100)]
         //Bu attributeleri kirletmek yerine third party bi şekilde fluent validation kullanmalısın
         public string Name { get; set; }
-        public decimal Price { get; set; }
 
-        public int Kdv { get; set; }
+        [Precision(18,2)]
+        public decimal Price { get; set; }
         public int Stock {  get; set; }
 
         //public DateTime? CreatedDate { get; set; }
@@ -36,11 +38,12 @@ namespace EFCore.CodeFirst.DAL
 
         //[DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         ////Hem add hemde update işlemlerini dbde yapıyorsak bu alanı dahil etmeyiz
-        public decimal  pricekdv { get; set; }
 
-        //public int? CategoryId { get; set; }
-        //public Category? Category { get; set; }
-
-        //public ProductFeature ProductFeature { get; set; }
+        public int CategoryId { get; set; }
+        //Virtual Lazy Loading için gerekli
+        public virtual Category Category { get; set; }
+        //Virtual Lazy Loading için gerekli
+        
+        public virtual ProductFeature ProductFeature { get; set; }
     }
 }

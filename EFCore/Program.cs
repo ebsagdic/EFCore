@@ -19,6 +19,8 @@ using (var context = new AppDbContext())
     //context.Entry(newProduct).State = EntityState.Modified;
     //context.Entry(newProduct).State = EntityState.Deleted;
     //context.Entry(newProduct).State = EntityState.Unchanged;
+    //context.Entry(newProduct).State = EntityState.Added;
+    //context.Entry(newProduct).State = EntityState.Detached;
     //////////////////////////////////////////////////////////////////////
     //context.Entry(newProduct).State = EntityState.Added;
     //Yukarıdaki işlem ile Add methodu aynı işlevdedir
@@ -128,10 +130,63 @@ using (var context = new AppDbContext())
     //context.Add(category);
     //context.SaveChanges();
 
-    var product = new Product() { Name = "Kebabçi", Price = 250, Barcode = 1234, Stock = 150, Kdv = 18 };
-    context.Products.Add(product);
-    context.SaveChanges();
+    //var product = new Product() { Name = "Kebabçi", Price = 250, Barcode = 1234, Stock = 150, Kdv = 18 };
+    //context.Products.Add(product);
+    //context.SaveChanges();
 
-    Console.WriteLine("Okeyto");
+
+    //Related Data Load - Eager Loading
+    //Navigation propertyler üzerinden ilgili entitylerin yüklenmesiişlemlerine data load deniyor.
+    //Eager loading ise örneğin product entitysini çekmek isterken aynı zamanda product featureuda çekmek istersek bu eager loadingdir
+    //var categoryWithProducts = context.Categories.Include(c => c.Products).ThenInclude(x=>x.ProductFeature).First();
+
+    //categoryWithProducts.Products.ForEach(product =>
+    //Console.WriteLine($"{categoryWithProducts.Name} {product.Name} {product.ProductFeature.Color}")
+
+    //Related Data Load - Explicit Loading
+    //Bir datayi çektiğimde navigation propertyleri kullanıp kullanmayacağım kodun devamında belli olacaksa bu loading kullanılır
+    //var category = context.Categories.First();
+    ////
+    ////
+    ////
+    //if (true)
+    //{
+    //    context.Entry(category).Collection(x=>x.Products).Load();
+
+    //    category.Products.ForEach(x =>
+    //    {
+    //        Console.WriteLine(x.Name);
+    //    });
+    //}
+    ////Birebir ilşikli olan Navigation Propertylerde
+    //var product = context.Products.First();
+
+    //if (true) 
+    //{
+    //    //Eğer navigation propertyler olmasa aşağıdaki satırı kullanırdık
+    //    context.ProductFeatures.Where(x => x.Id == product.Id).First();
+
+    //    context.Entry(product).Reference(x=>x.ProductFeature).Load();
+    //}
+
+    //Related Data Load - Lazy Loading
+    //EF Coreun Lazy loading özelliği enable edilirse ortaya çıkar. +/- Yanları vardır.- Yanı iki defa veritabanından data çeker. Aynı Exlicit loadingde olduğu gibi.
+    //Lazy loadingi açmak yani enable etmek için gereken kütüphane; Microsoft.EntityFrameworkCore.Proxies.
+    //var category = context.Categories.First();
+    //Console.WriteLine("ÇEKTİK");
+    //var products = category.Products;
+    //Console.WriteLine("Bitti");
+
+    //Ama lazy loadingin en büyük handikapı foreach döngülerinde ortaya çıkar
+    //Çünkü ilgili itemi alırken her defasında dbye sorgu basar. Bknz;
+
+    //var category = context.Categories.First();
+    //Console.WriteLine("ÇEKTİK");
+    //var products = category.Products;
+    //foreach (var item in products)
+    //{
+    //    var productFeature = item.ProductFeature;
+    //}
+
 
 }

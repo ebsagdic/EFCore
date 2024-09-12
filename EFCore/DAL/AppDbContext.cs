@@ -13,14 +13,17 @@ namespace EFCore.CodeFirst.DAL
         //DbSet classı tanımlanarak Tablo isminin Products olması, Product nesnesindeki Id propertysinin
         //Key olması tamamen EFCore sayesindedir.
         public DbSet<Product> Products { get; set; }
-        //public DbSet<Category> Categories { get; set; }
-        //public DbSet<ProductFeature> ProductFeatures { get; set; }
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<ProductFeature> ProductFeatures { get; set; }
         //public DbSet<Student> Students { get; set; }
         //public DbSet<Teacher> Teachers { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             Initializer.Build();
-            optionsBuilder.UseSqlServer(Initializer.configurationRoot.GetConnectionString("DefaultConnection"));
+            //LazyLoadingAktif
+            optionsBuilder.LogTo(Console.WriteLine, Microsoft.Extensions.Logging.LogLevel.Information)
+                .UseLazyLoadingProxies()
+                .UseSqlServer(Initializer.configurationRoot.GetConnectionString("DefaultConnection"));
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -58,9 +61,11 @@ namespace EFCore.CodeFirst.DAL
             //modelBuilder.Entity<Product>().Property(x => x.PriceKdv).HasComputedColumnSql("[Price]*[Kdv]");
 
             //DataBase attributelerinin fluent api ile tanımlanması
-            modelBuilder.Entity<Product>().Property(x => x.pricekdv).ValueGeneratedOnAdd();//Identity
-            modelBuilder.Entity<Product>().Property(x => x.pricekdv).ValueGeneratedOnAddOrUpdate();//Computed
-            modelBuilder.Entity<Product>().Property(x => x.pricekdv).ValueGeneratedNever();//None
+            //modelBuilder.Entity<Product>().Property(x => x.pricekdv).ValueGeneratedOnAdd();//Identity
+            //modelBuilder.Entity<Product>().Property(x => x.pricekdv).ValueGeneratedOnAddOrUpdate();//Computed
+            //modelBuilder.Entity<Product>().Property(x => x.pricekdv).ValueGeneratedNever();//None
+
+
             base.OnModelCreating(modelBuilder);
         }
 
