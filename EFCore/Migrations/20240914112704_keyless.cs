@@ -5,7 +5,7 @@
 namespace EFCore.CodeFirst.Migrations
 {
     /// <inheritdoc />
-    public partial class eagerload : Migration
+    public partial class keyless : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

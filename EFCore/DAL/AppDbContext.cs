@@ -17,13 +17,17 @@ namespace EFCore.CodeFirst.DAL
         public DbSet<ProductFeature> ProductFeatures { get; set; }
         //public DbSet<Student> Students { get; set; }
         //public DbSet<Teacher> Teachers { get; set; }
+        //public DbSet<Employee> Employees { get; set; }
+        //public DbSet<Manager> Managers { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             Initializer.Build();
             //LazyLoadingAktif
-            optionsBuilder.LogTo(Console.WriteLine, Microsoft.Extensions.Logging.LogLevel.Information)
-                .UseLazyLoadingProxies()
-                .UseSqlServer(Initializer.configurationRoot.GetConnectionString("DefaultConnection"));
+            //optionsBuilder.LogTo(Console.WriteLine, Microsoft.Extensions.Logging.LogLevel.Information)
+            //    .UseLazyLoadingProxies()
+            //    .UseSqlServer(Initializer.configurationRoot.GetConnectionString("DefaultConnection"));
+
+            optionsBuilder.UseSqlServer(Initializer.configurationRoot.GetConnectionString("DefaultConnection"));
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -64,6 +68,16 @@ namespace EFCore.CodeFirst.DAL
             //modelBuilder.Entity<Product>().Property(x => x.pricekdv).ValueGeneratedOnAdd();//Identity
             //modelBuilder.Entity<Product>().Property(x => x.pricekdv).ValueGeneratedOnAddOrUpdate();//Computed
             //modelBuilder.Entity<Product>().Property(x => x.pricekdv).ValueGeneratedNever();//None
+
+
+            //modelBuilder.Entity<Manager>().OwnsOne(x=>x.Person);
+            //modelBuilder.Entity<Employee>().OwnsOne(x=>x.Person);
+
+            //attribute  tarafında NotMapped propertysinin karşılığı
+            //modelBuilder.Entity<Product>().Ignore(x => x.Stock);
+
+            //Sütun adı ve tipini değiştirmeyi FluentApı ile yapmayı burda da tutmak istedim
+            //modelBuilder.Entity<Product>().Property(x=>x.Stock).HasColumnName("Stok").HasColumnType("int");
 
 
             base.OnModelCreating(modelBuilder);

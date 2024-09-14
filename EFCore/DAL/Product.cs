@@ -27,6 +27,8 @@ namespace EFCore.CodeFirst.DAL
 
         [Precision(18,2)]
         public decimal Price { get; set; }
+        //Aşağıdaki NotMapped  veritabanında sütun olarak basılasın istemediğimiz zaman gerekir
+        //[NotMapped]
         public int Stock {  get; set; }
 
         //public DateTime? CreatedDate { get; set; }
