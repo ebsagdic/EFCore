@@ -12,10 +12,15 @@ namespace EFCore.CodeFirst.DAL
 {
     //Aşağıdaki Configurationslar Data Annotation Attributes olarak geçer
     //[Table("ProductTb",Schema ="products")]
+    //Bu index türü normal ındex
+    //[Index(nameof(Name))]
+    ////Bu index türü composed index olarak geçer
+    //[Index(nameof(Name), nameof(Price))]
     public class Product
     {
         //[DatabaseGenerated(DatabaseGeneratedOption.None)]
-        ////Alan teker teker otomatik artsın istemiyosak bu şekilde 
+        ////Alan teker teker otomatik artsın istemiyosak bu şekilde
+        //Primary key alanlarına default Clustered Index atanır ef core tarafından
         public int Id { get; set; }
         //[Column("Name2",Order =2)]
 
@@ -34,6 +39,8 @@ namespace EFCore.CodeFirst.DAL
         //public DateTime? CreatedDate { get; set; }
         public  int  Barcode { get; set; }
 
+        //public decimal DiscountPrice { get; set; }
+
         //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         ////Sadece insert işlemlerinde dahil edilmesini istiyorsak bu attribute kullanılır.
         //public DateTime? CreatedDate { get; set; } = DateTime.Now;
@@ -41,6 +48,7 @@ namespace EFCore.CodeFirst.DAL
         //[DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         ////Hem add hemde update işlemlerini dbde yapıyorsak bu alanı dahil etmeyiz
 
+        //Foreign key alanlarına default Clustered Index atanır ef core tarafından
         public int CategoryId { get; set; }
         //Virtual Lazy Loading için gerekli
         public virtual Category Category { get; set; }

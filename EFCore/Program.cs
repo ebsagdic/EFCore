@@ -188,5 +188,50 @@ using (var context = new AppDbContext())
     //    var productFeature = item.ProductFeature;
     //}
 
+    ////////////////////////////////Client and Server Evalution
+    //var person = context.Peoples.Where(x => FormatPhone(x.Phone) == "5551482071").ToList();
+    ////Yukarıda hata alma sebebi Peoples tablosundan yapılan sorgunun tamamen Server side olması ve Serverside bi sorguda local bir fonksiyon kullanamazsın.
+    //var person = context.Peoples.ToList().Where(x => FormatPhone(x.Phone) == "5551482071").ToList();
+    ////Yukarıdaki method Peoples tablosundaki verileri tolist yaparak clienta çeker ver onun ardından Where sorgusu yaptığı için hata almaz.Client sorgusunda local fonksiyon çalıştırılabilir. 
+    //string FormatPhone(string phone)
+    //{
+    //    return phone.Substring(1, phone.Length - 1);
+    //}
 
+    //////////////////Inner Join
+    //var result = context.Categories.Join(context.Products,x=>x.Id,y=>y.CategoryId,(c,p) => p).ToList();
+
+    //var result2 = (from c in context.Categories
+    //              join p in context.Products on c.Id equals p.CategoryId
+    //              join pf in context.ProductFeatures on p.Id equals pf.Id
+    //              select new
+    //              {
+    //                  CategoryName = c.Name,
+    //                  ProductName = p.Name,
+    //                  ProductFeatureColor = pf.Color
+    //              }).ToList();
+    //////////////////Left Join
+    //var result = await (from p in context.Products
+    //                    join pf in context.ProductFeatures on p.Id equals pf.Id into pflist
+    //                    from pf in pflist.DefaultIfEmpty()
+    //                    select new { p }).ToListAsync();
+
+    ////////////////////Raw Sql
+    //decimal price = 10;
+    //var product = await context.Products.FromSqlRaw("select * from Products where Price>{0}",price).ToListAsync();
+    //var products = await context.Products.FromSqlInterpolated($"select * from Products where Price>{price}").ToListAsync();
+
+    //Sqlden ham sorgu ile getirdiğimiz datalar ile entitymiz uymaz ise hata alırız
+    //var productWithFeature = await context.ProductFeatures.FromSqlRaw("  select p.Id, p.Name,p.Price,pf.Color,pf.Height from Products as p " +
+    //    "  join ProductFeatures as pf on p.Id = pf.Id").ToListAsync();
+    //Yukarıdaki koddan dönen hatayı düzeltmek için ham sorgudan dönen propertylere uygun entity oluşturmak gerekir
+    var productWithFeatures = await context.ProductWithFeatures.FromSqlRaw("  select p.Id, p.Name,p.Price,pf.Color,pf.Height from Products as p " +
+        "  join ProductFeatures as pf on p.Id = pf.Id").ToListAsync();
+
+    //Ön tanımlı Sql cümleciği için ToSqlQuery methodu AppDbContextde ilgili entity için modelBuildera eklenir.
+    //Ve bu şekilde ilgili entity için sabit bir sorgumuz var ise her defasıdna tekrardan yazmaktansa bir kere yazarak hallederiz
+    //Aşağıdaki sorgu price ve name getirir
+    var products = context.ProductWithFeatures.ToList();
+
+    Console.WriteLine("");
 }

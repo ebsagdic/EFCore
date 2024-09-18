@@ -5,7 +5,7 @@
 namespace EFCore.CodeFirst.Migrations
 {
     /// <inheritdoc />
-    public partial class keyless : Migration
+    public partial class join : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

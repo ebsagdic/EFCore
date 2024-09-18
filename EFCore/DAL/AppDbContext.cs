@@ -13,12 +13,16 @@ namespace EFCore.CodeFirst.DAL
         //DbSet classı tanımlanarak Tablo isminin Products olması, Product nesnesindeki Id propertysinin
         //Key olması tamamen EFCore sayesindedir.
         public DbSet<Product> Products { get; set; }
+        //public DbSet<People> Peoples { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<ProductFeature> ProductFeatures { get; set; }
+        public DbSet<ProductWithFeature> ProductWithFeatures { get; set; }
+
         //public DbSet<Student> Students { get; set; }
         //public DbSet<Teacher> Teachers { get; set; }
         //public DbSet<Employee> Employees { get; set; }
         //public DbSet<Manager> Managers { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             Initializer.Build();
@@ -27,7 +31,7 @@ namespace EFCore.CodeFirst.DAL
             //    .UseLazyLoadingProxies()
             //    .UseSqlServer(Initializer.configurationRoot.GetConnectionString("DefaultConnection"));
 
-            optionsBuilder.UseSqlServer(Initializer.configurationRoot.GetConnectionString("DefaultConnection"));
+            optionsBuilder.LogTo(Console.WriteLine, Microsoft.Extensions.Logging.LogLevel.Information).UseSqlServer(Initializer.configurationRoot.GetConnectionString("DefaultConnection"));
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -79,6 +83,21 @@ namespace EFCore.CodeFirst.DAL
             //Sütun adı ve tipini değiştirmeyi FluentApı ile yapmayı burda da tutmak istedim
             //modelBuilder.Entity<Product>().Property(x=>x.Stock).HasColumnName("Stok").HasColumnType("int");
 
+            ////Normal Index
+            //modelBuilder.Entity<Product>().HasIndex(x=>x.Id);
+            ////Composed Index
+            //modelBuilder.Entity<Product>().HasIndex(x=> new { x.Id, x.Name });
+
+            //context.Products.Where(x=>x.Name =="Kalem").Select(x=> new { name = x.Name , Price = x.Price, Stock = x.Stock});
+            //Yukarıdaki gibi bir sorgu için, yani Name alaı ilk seçilip buna ait price ve stock ek olarak çekiliceği zamanlarda Included Columns Index tercih edilir
+            //modelBuilder.Entity<Product>().HasIndex(x=>x.Id).IncludeProperties(x=> new { x.Price, x.Stock });
+
+            //Veri tabanının tutarlı olması için Constraintler tanımlayabiliriz, Örneğin fiyat alanının indirimli fiyattan fazla olmasını zorunlu kılan constraint
+            //modelBuilder.Entity<Product>().HasCheckConstraint("PriceAndDiscountPriceCheck", "[Price]>[DiscountPrice]");
+            //Yukarıdaki işlemi hem veritabanı için hem de business kod tarafında yapmak tutarlılığı arttırıcaktır.
+
+            ////Ön tanımlı Sql Cümleciği için
+            //modelBuilder.Entity<ProductWithFeature>().ToSqlQuery("Select Price, Name from Products ");
 
             base.OnModelCreating(modelBuilder);
         }
