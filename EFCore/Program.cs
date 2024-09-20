@@ -225,13 +225,25 @@ using (var context = new AppDbContext())
     //var productWithFeature = await context.ProductFeatures.FromSqlRaw("  select p.Id, p.Name,p.Price,pf.Color,pf.Height from Products as p " +
     //    "  join ProductFeatures as pf on p.Id = pf.Id").ToListAsync();
     //Yukarıdaki koddan dönen hatayı düzeltmek için ham sorgudan dönen propertylere uygun entity oluşturmak gerekir
-    var productWithFeatures = await context.ProductWithFeatures.FromSqlRaw("  select p.Id, p.Name,p.Price,pf.Color,pf.Height from Products as p " +
-        "  join ProductFeatures as pf on p.Id = pf.Id").ToListAsync();
+    //var productWithFeatures = await context.ProductWithFeatures.FromSqlRaw("  select p.Id, p.Name,p.Price,pf.Color,pf.Height from Products as p " +
+    //    "  join ProductFeatures as pf on p.Id = pf.Id").ToListAsync();
 
     //Ön tanımlı Sql cümleciği için ToSqlQuery methodu AppDbContextde ilgili entity için modelBuildera eklenir.
     //Ve bu şekilde ilgili entity için sabit bir sorgumuz var ise her defasıdna tekrardan yazmaktansa bir kere yazarak hallederiz
     //Aşağıdaki sorgu price ve name getirir
-    var products = context.ProductWithFeatures.ToList();
+    //var products = context.ProductWithFeatures.ToList();
+
+    //Store Procedure
+    //Direkt bir entity karşılığı olan sp çağrımı
+    //var products = context.Products.FromSqlRaw("exec sp_get_products").ToList();
+    //Direkt olarak bir entity karşılığı olmayan bir complex bir sp var ise buna ait model oluşturulup çağrılır.
+    //var productsFull = context.ProductFulls.FromSqlRaw("exec sp_get_productsFull").ToList();
+
+    ////dışardan değer alan sp örneği
+    //int width = 250;
+    //var productsFull = context.ProductFulls.FromSqlRaw($"exec sp_get_productsFull_parameters {width}").ToList();
+
+    //Geriye hiçbirşey dönmeyen veyahut sadece insert edilen dataya ait id dönen sp
 
     Console.WriteLine("");
 }

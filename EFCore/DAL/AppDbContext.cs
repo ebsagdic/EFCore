@@ -17,6 +17,7 @@ namespace EFCore.CodeFirst.DAL
         public DbSet<Category> Categories { get; set; }
         public DbSet<ProductFeature> ProductFeatures { get; set; }
         public DbSet<ProductWithFeature> ProductWithFeatures { get; set; }
+        public DbSet<ProductFull> ProductFulls { get; set; }
 
         //public DbSet<Student> Students { get; set; }
         //public DbSet<Teacher> Teachers { get; set; }
@@ -98,6 +99,8 @@ namespace EFCore.CodeFirst.DAL
 
             ////Ön tanımlı Sql Cümleciği için
             //modelBuilder.Entity<ProductWithFeature>().ToSqlQuery("Select Price, Name from Products ");
+
+            modelBuilder.Entity<ProductFull>().HasNoKey();
 
             base.OnModelCreating(modelBuilder);
         }

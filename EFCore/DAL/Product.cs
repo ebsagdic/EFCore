@@ -51,9 +51,9 @@ namespace EFCore.CodeFirst.DAL
         //Foreign key alanlarına default Clustered Index atanır ef core tarafından
         public int CategoryId { get; set; }
         //Virtual Lazy Loading için gerekli
-        public virtual Category Category { get; set; }
-        //Virtual Lazy Loading için gerekli
+        //public virtual Category Category { get; set; }
+        ////Virtual Lazy Loading için gerekli
         
-        public virtual ProductFeature ProductFeature { get; set; }
+        //public virtual ProductFeature ProductFeature { get; set; }
     }
 }
