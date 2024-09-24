@@ -1,6 +1,12 @@
-﻿using EFCore.CodeFirst;
+﻿using AutoMapper.QueryableExtensions;
+using EFCore.CodeFirst;
 using EFCore.CodeFirst.DAL;
+using EFCore.CodeFirst.DTO_s;
+using EFCore.CodeFirst.Mappers;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query;
+using System.Runtime.Serialization;
 using System.Text;
 
 Initializer.Build();
@@ -245,5 +251,69 @@ using (var context = new AppDbContext())
 
     //Geriye hiçbirşey dönmeyen veyahut sadece insert edilen dataya ait id dönen sp
 
-    Console.WriteLine("");
+    //var productsFullInsert = new Product()
+    //{
+    //    Name = "KalemBaba3",
+    //    Price = 150,
+    //    Stock = 75,
+    //    Barcode = 789,
+    //    CategoryId = 2
+    //};
+
+    //var productsFullReturnId = new SqlParameter("@newId", System.Data.SqlDbType.Int);
+    //productsFullReturnId.Direction = System.Data.ParameterDirection.Output;
+    ////model üzerinden değilde Database üzerinde Execute methodu , Geriye hiçbirşey dönmeyen veyahut sadece insert edilen dataya ait id dönen splerde kullanılır
+    //context.Database.ExecuteSqlInterpolated($"exec sp_insert_product {productsFullInsert.Name},{productsFullInsert.Price},{productsFullInsert.Stock},{productsFullInsert.Barcode},{productsFullInsert.CategoryId}, {productsFullReturnId} out");
+
+    //var newProductId = productsFullReturnId.Value;
+
+    //////////////////////////////////////////////////////////////////////////
+    ///PROJECTIONS
+    ////Entity projections
+    //var products = context.Products.ToList();
+
+    ////Anonymous Projections
+
+    //var products = context.Products.Include(p => p.Category).Include(p => p.ProductFeature).Select(x => new
+    //{
+    //    CategoryName= x.Category.Name,
+    //    ProductName= x.Name,
+    //    ProductPrice = x.Price,
+    //    Width = (int?)x.ProductFeature.Width,
+    //}).Where(x=>x.Width>10).ToList();
+
+    //var categories = context.Categories.Include(x => x.Products).ThenInclude(x => x.ProductFeature).Select(x => new
+    //{
+    //    CategoryName = x.Name,
+    //    Products = String.Join(",", x.Products.Select(z=>z.Name)),
+    //    TotalPrice = x.Products.Sum(x=>x.Price)
+    //}).Where(y=>y.TotalPrice>10).OrderBy(x=>x.TotalPrice).ToList();
+
+    //Include ve ThenInclude olmadan da navigation propertylerin yardımıyla yapılabilir aynı işlem;
+    //var categories = context.Categories.Select(x => new
+    //{
+    //    CategoryName = x.Name,
+    //    Products = String.Join(",", x.Products.Select(z => z.Name)),
+    //    TotalPrice = x.Products.Sum(x => x.Price)
+    //}).Where(y => y.TotalPrice > 10).OrderBy(x => x.TotalPrice).ToList();
+
+
+    //DTO/View Model entityi tamamıyla dış dünyaya clienta açmak istemediğimiz zaman oluşturulur.
+    //var products = context.Products.Include(p => p.Category).Include(p => p.ProductFeature).Select(x => new ProductDto
+    //{
+    //    CategoryName = x.Category.Name,
+    //    ProductName = x.Name,
+    //    ProductPrice = x.Price,
+    //    Width = (int?)x.ProductFeature.Width,
+    //}).Where(x => x.Width > 10).ToList();
+
+    ////AutoMapper kullanarak otomatik mapleme de yapabiliriz
+
+    //var product = context.Products.ToList();
+
+    //var pdoductDto = ObjectMappers.Mapper.Map<List<ProductDtoOrigin>>(product);
+
+    ////Automapperda bu nesneyi komnple çağırıp sonra maplemek yerine direkt maplenicek dto türünde çağırabiliriz
+
+    //var productDto = context.Products.ProjectTo<ProductDtoOrigin>(ObjectMappers.Mapper.ConfigurationProvider).ToList();
 }
