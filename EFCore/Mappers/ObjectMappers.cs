@@ -24,9 +24,8 @@ namespace EFCore.CodeFirst.Mappers
     }
     internal class CustomMapping : Profile
     {
-        public CustomMapping()
+        public CustomMapping() 
         {
-            CreateMap<ProductDtoOrigin, Product>().ReverseMap();
+            CreateMap<ProductDtoOrigin,Product>().ReverseMap();
         }
-    }
 }
